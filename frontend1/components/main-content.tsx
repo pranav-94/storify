@@ -19,6 +19,7 @@ export default function MainContent() {
     const [generatedStory, setGeneratedStory] = useState("")
     const [displayedStory, setDisplayedStory] = useState("")
     const [plot,setPlot]:any = useState("")
+    const [imgPlot,setImgPlot] = useState("")
     const [geners,setGeners] = useState("")
     const [language,setLanguage] = useState("")
 
