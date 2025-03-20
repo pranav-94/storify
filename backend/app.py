@@ -8,6 +8,9 @@ from flask_cors import CORS
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+from kokoro import KPipeline
+import soundfile as sf
+import numpy as np  # for array manipulation
 
 load_dotenv()
 
@@ -25,19 +28,15 @@ jwt = JWTManager(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
-# client = InferenceClient(
-#   provider="together",
-#   api_key="")
-
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+# TTS Pipeline Setup
+pipeline = KPipeline(lang_code='h')  # Ensure lang_code matches the voice for TTS
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -83,7 +82,6 @@ def dashboard():
 def logout():
     return jsonify({"message": "Successfully logged out"}), 200
 
-
 @app.route('/api/fetchData', methods=['POST'])
 def fetchData():
     try:
@@ -102,13 +100,13 @@ def fetchData():
         genre_text = " and ".join(genres[:2])  # Use first two genres if available
         
         # Create prompt
-        prompt = f"Write a {language} story in the {genre_text} genres based on this plot: {plot} keep it short and simple"
+        prompt = f"Write a {language} story in the {genre_text} genres based on this plot: {plot} keep it short and simple and only in 150 words."
 
         # Send request to Gemini API
-        model = genai.GenerativeModel("gemini-1.5-flash-002")  # Use Gemini Pro model
+        model = genai.GenerativeModel("gemini-2.0-flash")  # Use Gemini Pro model
         response = model.generate_content(prompt)
 
-        # Extract response text
+# Extract response text
         result = response.text if response.text else "No response generated."
 
         return jsonify({"message": result})
@@ -116,11 +114,46 @@ def fetchData():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+@app.route('/api/generateTTS', methods=['POST'])
+def generateTTS():
+    try:
+        # Get text input from the request
+        data = request.get_json()
+        text = data.get('text', '')
 
+        if not text:
+            return jsonify({"error": "Text is required"}), 400
 
+        # Split the text into sentences or smaller chunks
+        sentences = text.split('.')
+
+        # Collect all audio chunks into a list
+        audio_chunks = []
+
+        # Generate audio for each sentence
+        for sentence in sentences:
+            if sentence.strip():  # Skip empty sentences
+                generator = pipeline(
+                    sentence.strip() + '.',  # Add full stop to sentence
+                    voice='hm_omega',  # Use Hindi voice ('hf_alpha')
+                    speed=1, split_pattern=r''  # No split pattern
+                )
+
+                # Process each chunk and collect the audio data
+                for i, (gs, ps, audio) in enumerate(generator):
+                    audio_chunks.append(audio)
+
+        # Concatenate all the audio chunks into one large array
+        combined_audio = np.concatenate(audio_chunks, axis=0)
+
+        # Save the combined audio into one file
+        audio_file_path = 'combined_audio.wav'
+        sf.write(audio_file_path, combined_audio, 24000)  # Save as a single file
+
+        return jsonify({"message": "Audio file generated", "audio_file": audio_file_path})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
-
-    

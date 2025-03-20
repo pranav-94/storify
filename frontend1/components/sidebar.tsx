@@ -28,15 +28,15 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
             </Button>
             <Button variant="ghost" className="w-full justify-start">
               <MessageCircle className="mr-2 h-4 w-4" />
-              Messages
+              Poems
             </Button>
-            <Button variant="ghost" className="w-full justify-start">
+            {/* <Button variant="ghost" className="w-full justify-start">
               <Flask className="mr-2 h-4 w-4" />
               Labs
-            </Button>
+            </Button> */}
             <Button variant="ghost" className="w-full justify-start">
               <BookText className="mr-2 h-4 w-4" />
-              Blogs
+              History
             </Button>
             <Button variant="ghost" className="w-full justify-start">
               <Zap className="mr-2 h-4 w-4" />
