@@ -1,7 +1,20 @@
 import { Button } from "@/components/ui/button"
 import { Home, BookOpen, MessageCircle, FlaskRoundIcon as Flask, BookText, Zap, LogIn, X } from "lucide-react"
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+
+  const navigate = useRouter()
+
+
+  const username = localStorage.getItem("username")
+  console.log(username)
+
+  const handleLog = ()=>{
+    localStorage.removeItem("username")
+    navigate.push('/')
+  }
+
   return (
     <div
       className={`fixed inset-y-0 left-0 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} md:relative md:translate-x-0 transition duration-200 ease-in-out z-30 md:z-0`}
@@ -10,8 +23,8 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         <div>
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-red-500 rounded-md mr-2"></div>
-              <h1 className="text-xl font-bold">MidReal</h1>
+              <img src="https://img.freepik.com/premium-vector/cool-headphone-vector-illustration-with-music-bar_444100-29.jpg" className="w-8 h-8 rounded-xl" alt="" />
+              <h1 className="text-xl font-bold ml-2">Storify</h1>
             </div>
             <Button variant="ghost" className="md:hidden" onClick={onClose}>
               <X className="h-6 w-6" />
@@ -28,15 +41,15 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
             </Button>
             <Button variant="ghost" className="w-full justify-start">
               <MessageCircle className="mr-2 h-4 w-4" />
-              Messages
+              Poems
             </Button>
-            <Button variant="ghost" className="w-full justify-start">
+            {/* <Button variant="ghost" className="w-full justify-start">
               <Flask className="mr-2 h-4 w-4" />
               Labs
-            </Button>
+            </Button> */}
             <Button variant="ghost" className="w-full justify-start">
               <BookText className="mr-2 h-4 w-4" />
-              Blogs
+              History
             </Button>
             <Button variant="ghost" className="w-full justify-start">
               <Zap className="mr-2 h-4 w-4" />
@@ -46,15 +59,16 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         </div>
         <div className="space-y-4">
           <Button variant="outline" className="w-full text-black">
-            <LogIn className="mr-2 h-4 w-4" />
-            Sign In
+
+            {username}
           </Button>
-          <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-            Storify
+          <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          onClick={handleLog}
+          >
+            Logout
           </Button>
         </div>
       </div>
     </div>
   )
 }
-

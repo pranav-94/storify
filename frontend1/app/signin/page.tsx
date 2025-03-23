@@ -1,13 +1,28 @@
-export const metadata = {
-    title: "Sign In - Open PRO",
-    description: "Page description",
-  };
-  
+'use client'
+
   import Link from "next/link";
-  
+  import {useState} from 'react'
+  import axios from "axios";
+  import { useRouter } from 'next/navigation';
   export default function SignIn() {
+
+    const [username,setUsername] = useState("")
+    const [password,setPassword] = useState("")
+    const navigate = useRouter()
+
+    const handleSignin = async()=>{
+        const response = await axios.post('http://127.0.0.1:5000/api/login',{
+          username: username,
+          password: password
+         })
+         if(response.status === 200){
+              localStorage.setItem("username",username)
+              navigate.push('/home')
+         }
+    }
+
     return (
-      <section className="">
+      <section className="bg-gradient-to-r from-gray-600 to-gray-900 h-screen">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="py-12 md:py-20">
             {/* Section header */}
@@ -17,20 +32,23 @@ export const metadata = {
               </h1>
             </div>
             {/* Contact form */}
-            <form className="mx-auto max-w-[400px]">
+            <div className="mx-auto max-w-[400px]">
               <div className="space-y-5">
                 <div>
                   <label
                     className="mb-1 block text-sm font-medium text-indigo-200/65"
                     htmlFor="email"
                   >
-                    Email
+                    username
                   </label>
                   <input
                     id="email"
-                    type="email"
+                    type="text"
                     className="form-input w-full"
-                    placeholder="Your email"
+                    placeholder="Your username"
+                    onChange={(e)=>{
+                      setUsername(e.target.value)
+                    }}
                   />
                 </div>
                 <div>
@@ -53,21 +71,21 @@ export const metadata = {
                     type="password"
                     className="form-input w-full"
                     placeholder="Your password"
+                    onChange={(e)=>{
+                      setPassword(e.target.value)
+                    }}
                   />
                 </div>
               </div>
               <div className="mt-6 space-y-5">
-                <button className="btn w-full bg-gradient-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_theme(colors.white/.16)] hover:bg-[length:100%_150%]">
+                <button
+                onClick={handleSignin}
+                className="btn w-full bg-gradient-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_theme(colors.white/.16)] hover:bg-[length:100%_150%]">
                   Sign in
                 </button>
-                <div className="flex items-center gap-3 text-center text-sm italic text-gray-600 before:h-px before:flex-1 before:bg-gradient-to-r before:from-transparent before:via-gray-400/25 after:h-px after:flex-1 after:bg-gradient-to-r after:from-transparent after:via-gray-400/25">
-                  or
-                </div>
-                <button className="btn relative w-full bg-gradient-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,theme(colors.gray.800),theme(colors.gray.700),theme(colors.gray.800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%]">
-                  Sign In with Google
-                </button>
+                
               </div>
-            </form>
+            </div>
             {/* Bottom link */}
             <div className="mt-6 text-center text-sm text-indigo-200/65">
               Don't you have an account?{" "}

@@ -9,7 +9,7 @@ export default function Header() {
         <div className="relative flex h-14 items-center justify-between gap-3 rounded-2xl bg-gray-900/90 px-3 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] after:absolute after:inset-0 after:-z-10 after:backdrop-blur-xs">
           {/* Site branding */}
           <div className="flex flex-1 items-center">
-            <img className="w-[50px] h-[30px]" src="https://imgs.search.brave.com/w9EbmoTxKd5pOAbUQd1k4rz0nkjO4jxK6fjdD6IYE48/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bG9nby53aW5lL2Ev/bG9nby9TcG90aWZ5/L1Nwb3RpZnktSWNv/bi1Mb2dvLndpbmUu/c3Zn" alt="" />
+            <img className="w-[30px] h-[30px] rounded-full " src=" https://img.freepik.com/premium-vector/cool-headphone-vector-illustration-with-music-bar_444100-29.jpg" alt="" />
           </div>
 
           {/* Desktop sign in links */}
