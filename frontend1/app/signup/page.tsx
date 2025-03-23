@@ -1,87 +1,79 @@
-  "use client"
-  import axios from "axios";
-  import Link from "next/link";
+"use client";
+
 import { useState } from "react";
-  
-  export default function SignUp() {
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-    const [username,setUsername] = useState("")
-    const [password,setPassword] = useState("")
+export default function SignUp() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-    const handleSignup = async()=>{
-         const response =  await axios.post("http://127.0.0.1:5000/api/register",{
-             username: username,
-             password: password
-          })
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/register", {
+        username: username,
+        password: password,
+      });
 
-          console.log(response.data)
+      if (response.status === 201) {
+        router.push("/signin");
+      }
+    } catch (error) {
     }
+  };
 
-    return (
-      <section className="bg-gradient-to-r from-gray-600 to-gray-900 h-screen">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="py-12 md:py-20">
-            {/* Section header */}
-            <div className="pb-12 text-center">
-              <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,theme(colors.gray.200),theme(colors.indigo.200),theme(colors.gray.50),theme(colors.indigo.300),theme(colors.gray.200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-                Create an account
-              </h1>
-            </div>
-            {/* Contact form */}
-            <div className="mx-auto max-w-[400px]">
-              <div className="space-y-5">
-                <div>
-                  <label
-                    className="mb-1 block text-sm font-medium text-indigo-200/65"
-                    htmlFor="name"
-                  >
-                    username <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    className="form-input w-full"
-                    placeholder="Your full name"
-                    onChange={(e)=>{
-                         setUsername(e.target.value)
-                    }}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    className="block text-sm font-medium text-indigo-200/65"
-                    htmlFor="password"
-                  >
-                    Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    className="form-input w-full"
-                    onChange={(e)=>{
-                      setPassword(e.target.value)
-                 }}
-                    placeholder="Password (at least 10 characters)"
-                  />
-                </div>
-              </div>
-              <div className="mt-6 space-y-5">
-                <button onClick={handleSignup} className="btn w-full bg-gradient-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_theme(colors.white/.16)] hover:bg-[length:100%_150%]">
-                  Register
-                </button>
-              
-              </div>
-            </div>
-            {/* Bottom link */}
-            <div className="mt-6 text-center text-sm text-indigo-200/65">
-              Already have an account?{" "}
-              <Link className="font-medium text-indigo-500" href="/signin">
-                Sign in
-              </Link>
-            </div>
-          </div>
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+      <div className="bg-[#ffffff] max-w-[350px] w-full p-8 rounded-2xl">
+        <div className="flex justify-center mb-4">
+          <img
+            src="https://img.freepik.com/premium-vector/cool-headphone-vector-illustration-with-music-bar_444100-29.jpg"
+            width={80}
+            height={80}
+            alt="Logo"
+            className="rounded-full shadow-[0px_0px_3px_#5f5f5f,0px_0px_0px_5px_#ecf0f3,8px_8px_15px_#a7aaa7,-8px_-8px_15px_#fff]"
+          />
         </div>
-      </section>
-    );
-  }
+        <div className="text-center text-xl font-semibold text-gray-600 mb-6">
+          Create Your Account
+        </div>
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div className="flex items-center rounded-full pl-4 shadow-inner shadow-[inset_8px_8px_8px_#cbced1,inset_-8px_-8px_8px_#fff]">
+            <input
+              type="text"
+              placeholder="Username"
+              className="w-full py-3 px-4 bg-transparent outline-none text-gray-700 rounded-full"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex items-center shadow-inner shadow-[inset_8px_8px_8px_#cbced1,inset_-8px_-8px_8px_#fff] rounded-full pl-4">
+            <input
+              type="password"
+              placeholder="Password (min 10 chars)"
+              className="w-full py-3 px-4 bg-transparent outline-none text-gray-700 rounded-full"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-full shadow-[3px_3px_3px_#b1b1b1,-3px_-3px_3px_#fff] text-lg"
+          >
+            Register
+          </button>
+        </form>
+        <div className="text-center text-sm text-gray-500 mt-4">
+          <p>Already have an account?</p>
+          <a href="/signin" className="text-blue-500 hover:text-blue-600">
+            Sign in
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,100 +1,83 @@
-'use client'
+"use client";
 
-  import Link from "next/link";
-  import {useState} from 'react'
-  import axios from "axios";
-  import { useRouter } from 'next/navigation';
-  export default function SignIn() {
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-    const [username,setUsername] = useState("")
-    const [password,setPassword] = useState("")
-    const navigate = useRouter()
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-    const handleSignin = async()=>{
-        const response = await axios.post('http://127.0.0.1:5000/api/login',{
-          username: username,
-          password: password
-         })
-         if(response.status === 200){
-              localStorage.setItem("username",username)
-              navigate.push('/home')
-         }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/api/login", {
+        username: username,
+        password: password,
+      });
+      if (response.status === 200) {
+        localStorage.setItem("username", username);
+        router.push("/home");
+      } else {
+        alert("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      alert("Login failed. Please try again.");
     }
+  };
 
-    return (
-      <section className="bg-gradient-to-r from-gray-600 to-gray-900 h-screen">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="py-12 md:py-20">
-            {/* Section header */}
-            <div className="pb-12 text-center">
-              <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,theme(colors.gray.200),theme(colors.indigo.200),theme(colors.gray.50),theme(colors.indigo.300),theme(colors.gray.200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-                Welcome back
-              </h1>
-            </div>
-            {/* Contact form */}
-            <div className="mx-auto max-w-[400px]">
-              <div className="space-y-5">
-                <div>
-                  <label
-                    className="mb-1 block text-sm font-medium text-indigo-200/65"
-                    htmlFor="email"
-                  >
-                    username
-                  </label>
-                  <input
-                    id="email"
-                    type="text"
-                    className="form-input w-full"
-                    placeholder="Your username"
-                    onChange={(e)=>{
-                      setUsername(e.target.value)
-                    }}
-                  />
-                </div>
-                <div>
-                  <div className="mb-1 flex items-center justify-between gap-3">
-                    <label
-                      className="block text-sm font-medium text-indigo-200/65"
-                      htmlFor="password"
-                    >
-                      Password
-                    </label>
-                    <Link
-                      className="text-sm text-gray-600 hover:underline"
-                      href="/reset-password"
-                    >
-                      Forgot?
-                    </Link>
-                  </div>
-                  <input
-                    id="password"
-                    type="password"
-                    className="form-input w-full"
-                    placeholder="Your password"
-                    onChange={(e)=>{
-                      setPassword(e.target.value)
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="mt-6 space-y-5">
-                <button
-                onClick={handleSignin}
-                className="btn w-full bg-gradient-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_theme(colors.white/.16)] hover:bg-[length:100%_150%]">
-                  Sign in
-                </button>
-                
-              </div>
-            </div>
-            {/* Bottom link */}
-            <div className="mt-6 text-center text-sm text-indigo-200/65">
-              Don't you have an account?{" "}
-              <Link className="font-medium text-indigo-500" href="/signup">
-                Sign Up
-              </Link>
-            </div>
-          </div>
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+      <div className="bg-[#ffffff] max-w-[350px] w-full p-8 rounded-2xl ">
+        <div className="flex justify-center mb-4">
+          <img
+            src="https://img.freepik.com/premium-vector/cool-headphone-vector-illustration-with-music-bar_444100-29.jpg"
+            width={80}
+            height={80}
+            alt="Twitter logo"
+            className="rounded-full shadow-[0px_0px_3px_#5f5f5f,0px_0px_0px_5px_#ecf0f3,8px_8px_15px_#a7aaa7,-8px_-8px_15px_#fff]"
+          />
         </div>
-      </section>
-    );
-  }
+        <div className="text-center text-xl font-semibold text-gray-600 mb-6">
+          Storify
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex items-center  rounded-full pl-4 shadow-inner shadow-[inset_8px_8px_8px_#cbced1,inset_-8px_-8px_8px_#fff]">
+            <input
+              type="text"
+              placeholder="Username"
+              className="w-full py-3 px-4 bg-transparent outline-none text-gray-700 rounded-full "
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex items-center shadow-inner shadow-[inset_8px_8px_8px_#cbced1,inset_-8px_-8px_8px_#fff] rounded-full pl-4">
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full py-3 px-4 bg-transparent outline-none text-gray-700 rounded-full"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-full shadow-[3px_3px_3px_#b1b1b1,-3px_-3px_3px_#fff] text-lg"
+          >
+            Login
+          </button>
+        </form>
+        <div className="text-center text-sm text-gray-500 mt-4">
+          <p>Don't have an account?</p>
+          <a href="/signup" className="text-blue-500 hover:text-blue-600">
+            Sign up
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
