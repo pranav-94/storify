@@ -309,8 +309,8 @@ const ImgGenerate = ({ plot }: { plot: string }) => {
   const imageUrl = usePollinationsImage(plot, {
     width: 1024,
     height: 1024,
-    seed: 42,
-    model: "flux",
+    seed: 126,
+    model: "flux-pro",
   })
 
   return (

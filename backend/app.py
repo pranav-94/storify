@@ -257,7 +257,8 @@ def fetchData():
         language = data.get('language')
         genres = data.get('geners', [])  # Get full list directly
         plot = data.get('plot')
-        img = f"Create a cinematic movie poster for the plot {plot}"
+
+        img = f"Create a cinematic movie poster with genre {genres}, based on the plot: ' {plot} ' The poster should visually capture the essence of the genre, featuring dynamic characters and an evocative setting that embodies the mood of the story. Incorporate an intriguing visual style that draws viewers in. The title should be taken directly from the plot, resonating with the themes of the story. Include a captivating tagline that encapsulates the essence of the narrative. generate a poster and its text in {language} language "
 
         if not language or not genres or not plot:
             return jsonify({"error": "Missing required fields"}), 400

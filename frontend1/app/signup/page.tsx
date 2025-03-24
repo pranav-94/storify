@@ -53,7 +53,7 @@ export default function SignUp() {
           <div className="flex items-center shadow-inner shadow-[inset_8px_8px_8px_#cbced1,inset_-8px_-8px_8px_#fff] rounded-full pl-4">
             <input
               type="password"
-              placeholder="Password (min 10 chars)"
+              placeholder="Password (min 8 characters)"
               className="w-full py-3 px-4 bg-transparent outline-none text-gray-700 rounded-full"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
