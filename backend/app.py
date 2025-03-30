@@ -160,7 +160,7 @@
 
 
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, logout_user
 from flask_bcrypt import Bcrypt
@@ -299,28 +299,37 @@ def generateTTS():
 
         # Generate audio for each sentence
         for sentence in sentences:
-            if sentence.strip():  # Skip empty sentences
+            if sentence.strip(): 
                 generator = pipeline(
-                    sentence.strip() + '.',  # Add full stop to sentence
-                    voice='hf_alpha',  # Use Hindi voice ('hf_alpha')
-                    speed=1, split_pattern=r''  # No split pattern
+                    sentence.strip() + '.',  
+                    voice='hf_alpha',  
+                    speed=0.8, split_pattern=r''  
                 )
 
                 # Process each chunk and collect the audio data
                 for i, (gs, ps, audio) in enumerate(generator):
                     audio_chunks.append(audio)
 
-        # Concatenate all the audio chunks into one large array
         combined_audio = np.concatenate(audio_chunks, axis=0)
 
-        # Save the combined audio into one file
-        audio_file_path = 'combined_audio.wav'
+       
+        audio_file_path = 'static/combined_audio.wav'
         sf.write(audio_file_path, combined_audio, 24000)  # Save as a single file
 
         return jsonify({"message": "Audio file generated", "audio_file": audio_file_path})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
+
+
+@app.route('/api/audio', methods=['GET'])
+def audio():
+      
+    return send_from_directory('static', 'combined_audio.wav')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -64,13 +64,13 @@ export default function MainContent() {
     try {
       // Log the request data for debugging
       console.log("Sending request with:", {
-        language: language || "English", // Provide default values
+        language: language || "English",
         geners: geners || "Adventure",
         plot: plot,
       })
 
       const result = await axios.post("http://127.0.0.1:5000/api/fetchData", {
-        language: language || "English", // Provide default values
+        language: language || "English", 
         geners: geners || "Adventure",
         plot: plot,
       })
