@@ -46,6 +46,7 @@
 
 "use client"
 
+import axios from "axios"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Sparkles } from "lucide-react"
@@ -65,9 +66,9 @@ export default function Home() {
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with gradient overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center z-0"
+        className="absolute inset-0 bg-cover bg-center z-0 brightness-50"
         style={{
-          backgroundImage: "url('https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
           backgroundSize: "cover",
         }}
       >
@@ -109,7 +110,7 @@ export default function Home() {
           className="max-w-4xl mx-auto"
         >
           <motion.div
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 bg-primary/10 text-blue-200 px-4 py-2 rounded-full mb-6 backdrop-blur-sm"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -126,7 +127,7 @@ export default function Home() {
           >
             Transform Your Ideas Into
             <motion.span
-              className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 ml-2"
+              className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400 ml-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -199,4 +200,3 @@ export default function Home() {
     </div>
   )
 }
-
