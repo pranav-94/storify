@@ -1,14 +1,19 @@
 import { Button } from "@/components/ui/button"
 import { Home, BookOpen, MessageCircle, FlaskRoundIcon as Flask, BookText, Zap, LogIn, X } from "lucide-react"
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
 
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
 
   const navigate = useRouter()
+  const [username, setUsername] = useState<string | null>(null);
 
-
-  const username = localStorage.getItem("username")
-  console.log(username)
+  useEffect(() => {
+    // This code only runs on the client
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername);
+    console.log(storedUsername);
+  }, []);
 
   const handleLog = ()=>{
     localStorage.removeItem("username")
@@ -59,7 +64,6 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         </div>
         <div className="space-y-4">
           <Button variant="outline" className="w-full text-black">
-
             {username}
           </Button>
           <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
